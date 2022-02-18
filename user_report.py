@@ -29,8 +29,8 @@ def get_user_report(group):
         username = member['user_name']
         user_profile = get_user_profile(username)
         username = user_profile['metadata']['unix_name'] 
-        join_date = parse(user_profile['metadata']['join_date']).strftime('%B %-d %Y')
-        jd = datetime.strptime(join_date, '%B %d %Y')
+        join_date = parse(user_profile['metadata']['join_date']).strftime('%Y/%m/%d')
+        jd = datetime.strptime(join_date, '%Y/%m/%d')
         email = user_profile['metadata']['email']
         institution = user_profile['metadata']['institution']
         name = user_profile['metadata']['name']
@@ -38,6 +38,7 @@ def get_user_report(group):
         user_entry = {
             'username': username, 
             'email': email, 
+            'institution': institution,
             'join_date': join_date,
             'jd': jd,
             'group': group
@@ -47,12 +48,12 @@ def get_user_report(group):
     return user_list
 
 def write_user_report(filename, user_report):
-    sorted_user_report = sorted(user_report, key=lambda user : user['join_date'], reverse=True)
+    sorted_user_report = sorted(user_report, key=lambda user : user['jd'], reverse=True)
     with open(filename, 'w', newline='') as csvfile:
         csvwriter = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
-        csvwriter.writerow(['Username', 'Email', 'Join date', 'Group'])
+        csvwriter.writerow(['Username', 'Email', 'Join date', 'Group', 'Institution'])
         for user in sorted_user_report:
-            csvwriter.writerow([user['username'], user['email'], user['join_date'], user['group']])
+            csvwriter.writerow([user['username'], user['email'], user['join_date'], user['group'], user['institution']])
 
 def plot_user_report(filename, user_report):
     xvalues_format = "%m-%Y" 
