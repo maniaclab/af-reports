@@ -10,7 +10,7 @@ class Editor(tk.Tk):
         self.config(menu=menubar)
         file_menu = tk.Menu(menubar)
         file_menu.add_command(label='Save', command=self.save)
-        file_menu.add_command(label='Reset', command=self.reset)
+        file_menu.add_command(label='Reset', command=self.load_report)
         file_menu.add_command(label='Exit', command=self.destroy)
         menubar.add_cascade(label="File", menu=file_menu)
         save_menu = tk.Menu(menubar)
@@ -35,9 +35,6 @@ class Editor(tk.Tk):
 
     def save(self):
         print("Saving")
-    
-    def reset(self):
-        self.load_report()
 
 if __name__ == "__main__":
     app = Editor()
